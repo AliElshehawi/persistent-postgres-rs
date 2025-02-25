@@ -475,6 +475,21 @@ impl PersistentPostgres {
 
         println!("{}", "POSTGRES - SHUTDOWN - Goodbye!".cyan())
     }
+
+    /// Prints out all registered listeners (channels and their tags)
+    pub async fn print_listeners(&self) {
+        let listeners = self.listeners.read().await;
+        if listeners.is_empty() {
+            println!("No listeners registered.");
+        } else {
+            for (channel, tag_map) in listeners.iter() {
+                println!("Channel: {}", channel);
+                for (tag, _) in tag_map.iter() {
+                    println!("  Listener tag: {}", tag);
+                }
+            }
+        }
+    }
 }
 
 /// A global static instance of `PersistentPostgres` that can be used throughout the application.
